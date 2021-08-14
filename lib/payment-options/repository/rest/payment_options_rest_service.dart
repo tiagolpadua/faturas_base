@@ -1,7 +1,6 @@
 import 'dart:convert';
 
-import 'package:faturas_base/payment-options/model/payment_option.dart';
-import 'package:flutter/foundation.dart';
+import 'package:faturas_base/shared/model/payment_option/payment_option.dart';
 import 'package:http/http.dart';
 
 class PaymentOptionsRestService {

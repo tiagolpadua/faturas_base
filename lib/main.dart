@@ -1,6 +1,7 @@
-import 'package:faturas_base/payment-options/model/payment_options_model.dart';
 import 'package:faturas_base/payment-options/repository/rest/payment_options_rest_service.dart';
 import 'package:faturas_base/payment-options/view/screens/payment_options.dart';
+import 'package:faturas_base/shared/model/credit_card/user_credit_card_model.dart';
+import 'package:faturas_base/shared/model/payment_option/payment_options_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +21,8 @@ class Home extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<PaymentOptionsModel>(
             create: (_) => PaymentOptionsModel()),
+        ChangeNotifierProvider<UserCreditCardModel>(
+            create: (_) => UserCreditCardModel()),
       ],
       child: MaterialApp(
         home: Faturas(),

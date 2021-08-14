@@ -1,5 +1,5 @@
-import 'package:faturas_base/payment-options/model/payment_option.dart';
-import 'package:faturas_base/payment-options/model/payment_options_model.dart';
+import 'package:faturas_base/shared/model/payment_option/payment_option.dart';
+import 'package:faturas_base/shared/model/payment_option/payment_options_model.dart';
 
 class PaymentOptionsViewModel {
   final PaymentOptionsModel _paymentOptionsModel;
