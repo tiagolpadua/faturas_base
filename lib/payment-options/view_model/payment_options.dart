@@ -7,25 +7,29 @@ class PaymentOptionsViewModel {
   PaymentOptionsViewModel({required PaymentOptionsModel paymentOptionsModel})
       : _paymentOptionsModel = paymentOptionsModel;
 
-  List<PaymentOption> get paymentOptions {
-    return _paymentOptionsModel.paymentOptions;
+  Future<List<PaymentOption>> getPaymentOptions() {
+    return _paymentOptionsModel.getPaymentOptions();
   }
 
   get invoiceValue {
     return _paymentOptionsModel.invoiceValue;
   }
 
-  PaymentOption get selectedPaymentOption {
+  PaymentOption? get selectedPaymentOption {
     return _paymentOptionsModel.selectedPaymentOption;
   }
 
-  set selectedPaymentOption(PaymentOption paymentOption) {
+  set selectedPaymentOption(PaymentOption? paymentOption) {
     _paymentOptionsModel.selectedPaymentOption = paymentOption;
   }
 
   double get operationTax {
-    return (_paymentOptionsModel.selectedPaymentOption.number *
-            _paymentOptionsModel.selectedPaymentOption.value) -
+    if (_paymentOptionsModel.selectedPaymentOption == null) {
+      return 0;
+    }
+
+    return (_paymentOptionsModel.selectedPaymentOption!.number *
+            _paymentOptionsModel.selectedPaymentOption!.value) -
         _paymentOptionsModel.invoiceValue;
   }
 }

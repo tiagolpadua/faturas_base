@@ -47,11 +47,32 @@ class PaymentOptionsWidget extends StatelessWidget {
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 16))),
               Expanded(
-                child: ListView.builder(
-                    itemCount: vm.paymentOptions.length,
-                    itemBuilder: (context, indice) {
-                      final paymentOption = vm.paymentOptions[indice];
-                      return PaymentOptionTile(paymentOption);
+                child: FutureBuilder<List<PaymentOption>>(
+                    future: context.select(
+                      (PaymentOptionsViewModel model) =>
+                          model.getPaymentOptions(),
+                    ),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        final paymentOptions = snapshot.data!;
+                        return ListView.builder(
+                            itemCount: paymentOptions.length,
+                            itemBuilder: (context, indice) {
+                              final paymentOption = paymentOptions[indice];
+                              return PaymentOptionTile(paymentOption);
+                            });
+                      } else if (snapshot.hasError) {
+                        return Text('${snapshot.error}');
+                      }
+
+                      return Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 100),
+                            child: const CircularProgressIndicator(),
+                          ),
+                        ],
+                      );
                     }),
               ),
               Divider(),
