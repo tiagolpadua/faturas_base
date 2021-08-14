@@ -11,10 +11,6 @@ class PaymentOptionsViewModel {
     return _paymentOptionsModel.paymentOptions;
   }
 
-  set selectedPaymentOption(PaymentOption? paymentOption) {
-    _paymentOptionsModel.selectedPaymentOption = paymentOption;
-  }
-
   get invoiceValue {
     return _paymentOptionsModel.invoiceValue;
   }
