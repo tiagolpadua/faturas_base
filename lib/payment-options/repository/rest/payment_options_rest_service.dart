@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 
 class PaymentOptionsRestService {
-  Future<List<PaymentOption>> fetchPaymentOptions() async {
+  Future<List<PaymentOption>>? fetchPaymentOptions() async {
     final url = Uri.parse(
         'https://dreamy-allen-2e1b47.netlify.app/payment-options.json');
 

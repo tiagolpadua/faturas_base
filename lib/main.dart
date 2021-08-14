@@ -1,7 +1,9 @@
+import 'package:faturas_base/payment-options/model/payment_options_model.dart';
 import 'package:faturas_base/payment-options/repository/rest/payment_options_rest_service.dart';
 import 'package:faturas_base/payment-options/view/screens/payment_options.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:provider/provider.dart';
 
 final getIt = GetIt.instance;
 
@@ -14,8 +16,14 @@ void main() {
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Faturas(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<PaymentOptionsModel>(
+            create: (_) => PaymentOptionsModel()),
+      ],
+      child: MaterialApp(
+        home: Faturas(),
+      ),
     );
   }
 }

@@ -8,18 +8,15 @@ import 'package:provider/provider.dart';
 class PaymentOptionsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(providers: [
-      ChangeNotifierProvider<PaymentOptionsModel>(
-          create: (_) => PaymentOptionsModel()),
-      ProxyProvider<PaymentOptionsModel, PaymentOptionsViewModel>(
-        create: (context) => PaymentOptionsViewModel(
-            paymentOptionsModel: context.read<PaymentOptionsModel>()),
-        update: (context, paymentOptionsModel, notifier) =>
-            PaymentOptionsViewModel(
-          paymentOptionsModel: paymentOptionsModel,
-        ),
+    return ProxyProvider<PaymentOptionsModel, PaymentOptionsViewModel>(
+      create: (context) => PaymentOptionsViewModel(
+          paymentOptionsModel: context.read<PaymentOptionsModel>()),
+      update: (context, paymentOptionsModel, notifier) =>
+          PaymentOptionsViewModel(
+        paymentOptionsModel: paymentOptionsModel,
       ),
-    ], child: PaymentOptionsWidget());
+      child: PaymentOptionsWidget(),
+    );
   }
 }
 
