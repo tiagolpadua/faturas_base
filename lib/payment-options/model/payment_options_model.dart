@@ -1,4 +1,5 @@
 import 'package:faturas_base/payment-options/model/payment_option.dart';
+import 'package:flutter/cupertino.dart';
 
 List<PaymentOption> defaultPaymentOptions = [
   PaymentOption(1, 3180, 3180),
@@ -10,8 +11,10 @@ List<PaymentOption> defaultPaymentOptions = [
   PaymentOption(7, 472.86, 3310),
 ];
 
-class PaymentOptionsModel {
+class PaymentOptionsModel extends ChangeNotifier {
   double _invoiceValue;
+
+  PaymentOption _selectedPaymentOption = defaultPaymentOptions[0];
 
   List<PaymentOption> _paymentOptions;
 
@@ -27,7 +30,12 @@ class PaymentOptionsModel {
     return _invoiceValue;
   }
 
-  set selectedPaymentOption(PaymentOption? paymentOption) {
-    selectedPaymentOption = paymentOption;
+  set selectedPaymentOption(PaymentOption paymentOption) {
+    _selectedPaymentOption = paymentOption;
+    notifyListeners();
+  }
+
+  PaymentOption get selectedPaymentOption {
+    return _selectedPaymentOption;
   }
 }

@@ -3,32 +3,34 @@ import 'package:faturas_base/payment-options/model/payment_options_model.dart';
 import 'package:faturas_base/payment-options/view_model/payment_options.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
-var nf = NumberFormat.simpleCurrency(locale: 'pt_BR');
-
-class PaymentOptionsScreen extends StatefulWidget {
-  PaymentOptionsViewModel paymentOptionsViewModel =
-      PaymentOptionsViewModel(paymentOptionsModel: PaymentOptionsModel());
-
-  late PaymentOption selectedPaymentOption;
-
+class PaymentOptionsScreen extends StatelessWidget {
   @override
-  _PaymentOptionsScreenState createState() => _PaymentOptionsScreenState();
+  Widget build(BuildContext context) {
+    return MultiProvider(providers: [
+      ChangeNotifierProvider<PaymentOptionsModel>(
+          create: (_) => PaymentOptionsModel()),
+      ProxyProvider<PaymentOptionsModel, PaymentOptionsViewModel>(
+        create: (context) => PaymentOptionsViewModel(
+            paymentOptionsModel: context.read<PaymentOptionsModel>()),
+        update: (context, paymentOptionsModel, notifier) =>
+            PaymentOptionsViewModel(
+          paymentOptionsModel: paymentOptionsModel,
+        ),
+      ),
+    ], child: PaymentOptionsWidget());
+  }
 }
 
-class _PaymentOptionsScreenState extends State<PaymentOptionsScreen> {
-  @override
-  void initState() {
-    super.initState();
-    widget.selectedPaymentOption =
-        widget.paymentOptionsViewModel.paymentOptions[0];
-  }
+class PaymentOptionsWidget extends StatelessWidget {
+  final nf = NumberFormat.simpleCurrency(locale: 'pt_BR');
 
   @override
   Widget build(BuildContext context) {
-    final operationTax = nf.format((widget.selectedPaymentOption.number *
-            widget.selectedPaymentOption.value) -
-        widget.paymentOptionsViewModel.invoiceValue);
+    final vm = context.select(
+      (PaymentOptionsViewModel vm) => vm,
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -46,17 +48,10 @@ class _PaymentOptionsScreenState extends State<PaymentOptionsScreen> {
                           fontWeight: FontWeight.bold, fontSize: 16))),
               Expanded(
                 child: ListView.builder(
-                    itemCount:
-                        widget.paymentOptionsViewModel.paymentOptions.length,
+                    itemCount: vm.paymentOptions.length,
                     itemBuilder: (context, indice) {
-                      final paymentOption =
-                          widget.paymentOptionsViewModel.paymentOptions[indice];
-                      return PaymentOptionTile(
-                          paymentOption, widget.selectedPaymentOption, (value) {
-                        setState(() {
-                          widget.selectedPaymentOption = value;
-                        });
-                      });
+                      final paymentOption = vm.paymentOptions[indice];
+                      return PaymentOptionTile(paymentOption);
                     }),
               ),
               Divider(),
@@ -76,7 +71,7 @@ class _PaymentOptionsScreenState extends State<PaymentOptionsScreen> {
                             ),
                             Spacer(),
                             Text(
-                              "${nf.format(widget.paymentOptionsViewModel.invoiceValue)}",
+                              "${nf.format(vm.invoiceValue)}",
                               style:
                                   TextStyle(color: Colors.grey, fontSize: 16),
                             ),
@@ -94,7 +89,7 @@ class _PaymentOptionsScreenState extends State<PaymentOptionsScreen> {
                             ),
                             Spacer(),
                             Text(
-                              "$operationTax",
+                              "${nf.format(vm.operationTax)}",
                               key: Key("tax"),
                               style:
                                   TextStyle(color: Colors.grey, fontSize: 16),
@@ -133,15 +128,18 @@ class _PaymentOptionsScreenState extends State<PaymentOptionsScreen> {
 
 class PaymentOptionTile extends StatelessWidget {
   final PaymentOption _payment;
-  final Function(PaymentOption) _onChangedFunction;
-  final PaymentOption _selectedPayment;
 
-  PaymentOptionTile(
-      this._payment, this._selectedPayment, this._onChangedFunction);
+  PaymentOptionTile(this._payment);
 
   @override
   Widget build(BuildContext context) {
+    final vm = context.select(
+      (PaymentOptionsViewModel vm) => vm,
+    );
+
     var key = Key('rlt_${_payment.number}');
+
+    var nf = NumberFormat.simpleCurrency(locale: 'pt_BR');
 
     return Card(
       child: RadioListTile<PaymentOption>(
@@ -153,9 +151,12 @@ class PaymentOptionTile extends StatelessWidget {
           ],
         ),
         value: _payment,
-        groupValue: _selectedPayment,
+        groupValue: vm.selectedPaymentOption,
         onChanged: (PaymentOption? value) {
-          _onChangedFunction(value!);
+          if (value == null) {
+            return;
+          }
+          vm.selectedPaymentOption = value;
         },
       ),
     );
