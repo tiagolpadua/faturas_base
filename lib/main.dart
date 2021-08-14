@@ -1,3 +1,4 @@
+import 'package:faturas_base/payment-options/view/screens/payment_options.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -135,8 +136,10 @@ class Faturas extends StatelessWidget {
                           child: Text('Pagar com cartão de crédito'),
                         ),
                         onPressed: () {
-                          debugPrint(
-                              'Navegar para tela de pagamento com cartão...');
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return PaymentOptionsScreen();
+                          }));
                         },
                       ),
                     ),
