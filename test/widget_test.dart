@@ -10,7 +10,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   testWidgets('Página inicial', (WidgetTester tester) async {
-    await tester.pumpWidget(Faturas());
+    await tester.pumpWidget(Home());
     expect(find.text('Última fatura'), findsOneWidget);
   });
 }

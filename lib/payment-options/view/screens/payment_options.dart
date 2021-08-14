@@ -31,11 +31,11 @@ class _PaymentOptionsScreenState extends State<PaymentOptionsScreen> {
         widget.paymentOptionsViewModel.invoiceValue);
 
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Pagamento da fatura'),
-        ),
-        body: Container(
-            child: Padding(
+      appBar: AppBar(
+        title: const Text('Pagamento da fatura'),
+      ),
+      body: Container(
+        child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Column(
             children: [
@@ -69,14 +69,17 @@ class _PaymentOptionsScreenState extends State<PaymentOptionsScreen> {
                         padding: const EdgeInsets.only(top: 20.0),
                         child: Row(
                           children: [
-                            Text("Fatura de junho",
-                                style: TextStyle(
-                                    color: Colors.grey, fontSize: 16)),
+                            Text(
+                              "Fatura de junho",
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 16),
+                            ),
                             Spacer(),
                             Text(
-                                "${nf.format(widget.paymentOptionsViewModel.invoiceValue)}",
-                                style: TextStyle(
-                                    color: Colors.grey, fontSize: 16)),
+                              "${nf.format(widget.paymentOptionsViewModel.invoiceValue)}",
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 16),
+                            ),
                           ],
                         ),
                       ),
@@ -84,14 +87,18 @@ class _PaymentOptionsScreenState extends State<PaymentOptionsScreen> {
                         padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
                         child: Row(
                           children: [
-                            Text("Taxa da operação",
-                                style: TextStyle(
-                                    color: Colors.grey, fontSize: 16)),
+                            Text(
+                              "Taxa da operação",
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 16),
+                            ),
                             Spacer(),
-                            Text("$operationTax",
-                                key: Key("tax"),
-                                style: TextStyle(
-                                    color: Colors.grey, fontSize: 16)),
+                            Text(
+                              "$operationTax",
+                              key: Key("tax"),
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 16),
+                            ),
                           ],
                         ),
                       )
@@ -118,7 +125,9 @@ class _PaymentOptionsScreenState extends State<PaymentOptionsScreen> {
               )
             ],
           ),
-        )));
+        ),
+      ),
+    );
   }
 }
 
@@ -135,19 +144,20 @@ class PaymentOptionTile extends StatelessWidget {
     var key = Key('rlt_${_payment.number}');
 
     return Card(
-        child: RadioListTile<PaymentOption>(
-      title: Row(
-        children: [
-          Text('${_payment.number} x ${nf.format(_payment.value)}', key: key),
-          Spacer(),
-          Text('${nf.format(_payment.total)}'),
-        ],
+      child: RadioListTile<PaymentOption>(
+        title: Row(
+          children: [
+            Text('${_payment.number} x ${nf.format(_payment.value)}', key: key),
+            Spacer(),
+            Text('${nf.format(_payment.total)}'),
+          ],
+        ),
+        value: _payment,
+        groupValue: _selectedPayment,
+        onChanged: (PaymentOption? value) {
+          _onChangedFunction(value!);
+        },
       ),
-      value: _payment,
-      groupValue: _selectedPayment,
-      onChanged: (PaymentOption? value) {
-        _onChangedFunction(value!);
-      },
-    ));
+    );
   }
 }
